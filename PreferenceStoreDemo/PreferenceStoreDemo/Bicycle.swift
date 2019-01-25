@@ -35,10 +35,6 @@ class Bicycle: NSObject, MSTRDevicePreferenceStoreProtocol {
         backWheel = aDecoder.decodeObject(forKey: "backWheel") as! Wheel
     }
 
-    func storeToPreference() {
-        MSTRDevicePreference.devicePreference.bicycle = self
-    }
-
     static func defaultValueInstance() -> MSTRDevicePreferenceStoreProtocol {
         let defaultSelf = Bicycle()
         if let dic = MSTRDevicePreference.preferenceDefaultDic["bicycle"] as? NSDictionary {

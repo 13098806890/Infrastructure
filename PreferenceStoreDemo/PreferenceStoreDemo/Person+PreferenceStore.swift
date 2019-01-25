@@ -10,10 +10,6 @@ import Foundation
 
 extension Person: MSTRDevicePreferenceStoreProtocol {
 
-    public func storeToPreference() {
-        MSTRDevicePreference.devicePreference.person = self
-    }
-
     static func defaultValueInstance() -> MSTRDevicePreferenceStoreProtocol {
         let person = Person()
         person.name = "name"

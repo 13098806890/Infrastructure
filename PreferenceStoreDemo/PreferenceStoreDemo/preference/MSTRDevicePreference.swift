@@ -57,7 +57,6 @@ extension UserDefaults {
             return false
         }
 
-
         enum defaultKeys: String {
             case networkTimeOut
             case folderCaching
@@ -82,8 +81,8 @@ extension UserDefaults {
 }
 
 protocol MSTRDevicePreferenceStoreProtocol: MSTRDevicePreferenceStoreBaseProtocol, NSSecureCoding {
-    func storeToPreference()
-    func store()
+    func store(process: () -> Void)
+    func synchronizedStore(process: () -> Void)
     static func defaultValueInstance() -> MSTRDevicePreferenceStoreProtocol
     static func userDefaultStoreKey() -> String
 }
@@ -94,8 +93,8 @@ extension MSTRDevicePreferenceStoreProtocol {
         return String(describing: Self.self)
     }
 
-    public func store() {
-        self.storeToPreference()
+    public func store(process: () -> Void) {
+        process()
         var data: Data
         do {
             data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)
@@ -103,6 +102,12 @@ extension MSTRDevicePreferenceStoreProtocol {
             data = NSKeyedArchiver.archivedData(withRootObject: self)
         }
         UserDefaults.standard.set(data, forKey: Self.userDefaultStoreKey())
+    }
+
+    public func synchronizedStore(process: () -> Void) {
+        objc_sync_enter(self)
+        self.store(process: process)
+        objc_sync_exit(self)
     }
 
     public static func registerDefaults() {
@@ -153,14 +158,13 @@ extension MSTRDevicePreferenceStoreProtocol {
         }
     }
 
-    var bicycle: Bicycle
+    private(set) var bicycle: Bicycle = MSTRDevicePreference.instanceFromUserDefaults(key: Bicycle.userDefaultStoreKey()) as! Bicycle
     var person: Person
 
 
     override init() {
         UserDefaults.Settings.registerDefaults()
         Bicycle.registerDefaults()
-        bicycle = MSTRDevicePreference.instanceFromUserDefaults(key: Bicycle.userDefaultStoreKey()) as! Bicycle
         Person.registerDefaults()
         person = MSTRDevicePreference.instanceFromUserDefaults(key: Person.userDefaultStoreKey()) as! Person
     }

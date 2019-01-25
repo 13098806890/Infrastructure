@@ -55,40 +55,59 @@ class DemoViewController: UIViewController {
     }
 
     @IBAction func changeBicycleLock(_ sender: Any) {
-        preference.bicycle.isLock = self.bicycleLockSwitchButton.isOn
-        preference.bicycle.store()
+        preference.bicycle.store {
+            preference.bicycle.isLock = self.bicycleLockSwitchButton.isOn
+        }
+        DispatchQueue.global().async {
+            self.preference.bicycle.store {
+                sleep(1)
+                self.preference.bicycle.fontWheel.pressure = 100
+                sleep(1)
+                self.preference.bicycle.backWheel.pressure = 100
+            }
+        }
+        DispatchQueue.global().async {
+            self.preference.bicycle.store {
+                self.preference.bicycle.fontWheel.pressure = 1
+                sleep(3)
+                self.preference.bicycle.backWheel.pressure = 1
+            }
+        }
+        updataUI()
     }
 
     @IBAction func changeBicycleFrontWheelPressure(_ sender: Any) {
         let bicycle = preference.bicycle
-        bicycle.fontWheel.pressure = NSInteger(self.frontWheelPressureTextField.text ?? "-1") ?? -1
-        bicycle.store()
+        bicycle.store(process: {bicycle.fontWheel.pressure = NSInteger(self.frontWheelPressureTextField.text ?? "-1") ?? -1})
     }
 
     @IBAction func changeBicycleFrontPump(_ sender: Any) {
-        let bicycle = preference.bicycle.copy() as! Bicycle
-        bicycle.fontWheel.needTobePumped = self.frontWheelPumpSwitchButton.isOn
-        bicycle.store()
+        let bicycle = preference.bicycle
+        bicycle.store(process: {
+            bicycle.fontWheel.needTobePumped = self.frontWheelPumpSwitchButton.isOn
+        })
     }
 
     @IBAction func changeBicycleBackWheelPressure(_ sender: Any) {
-        preference.bicycle.backWheel.pressure = NSInteger(self.backWheelPressureTextField.text ?? "-1") ?? -1
-        preference.bicycle.store()
+        preference.bicycle.store(process: {preference.bicycle.backWheel.pressure = NSInteger(self.backWheelPressureTextField.text ?? "-1") ?? -1})
     }
 
     @IBAction func changeBicycleBackWheelPump(_ sender: Any) {
-        preference.bicycle.backWheel.needTobePumped = self.backWheelPumpSwitchButton.isOn
-        preference.bicycle.store()
+        preference.bicycle.store {
+            preference.bicycle.backWheel.needTobePumped = self.backWheelPumpSwitchButton.isOn
+        }
     }
 
     @IBAction func changeName(_ sender: Any) {
-        preference.person.name = self.nameTextField.text ?? "default"
-        preference.person.store()
+        preference.person.store {
+            preference.person.name = self.nameTextField.text ?? "default"
+        }
     }
 
     @IBAction func changeAge(_ sender: Any) {
-        preference.person.age = NSInteger(self.ageTextField.text ?? "-1") ?? -1
-        preference.person.store()
+        preference.person.store {
+            preference.person.age = NSInteger(self.ageTextField.text ?? "-1") ?? -1
+        }
     }
     
     @IBAction func refresh(_ sender: Any) {
