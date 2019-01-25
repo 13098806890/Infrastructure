@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>settings</key>
+	<dict>
+		<key>needToUpdate</key>
+		<false/>
+		<key>networkTimeOut</key>
+		<integer>111</integer>
+		<key>folderCaching</key>
+		<false/>
+		<key>logLevel</key>
+		<string>INFO</string>
+	</dict>
+	<key>bicycle</key>
+	<dict>
+		<key>needToUpdate</key>
+		<false/>
+		<key>isLock</key>
+		<false/>
+		<key>frontWheel</key>
+		<dict>
+			<key>pressure</key>
+			<integer>666</integer>
+			<key>needTobePumped</key>
+			<false/>
+		</dict>
+		<key>backWheel</key>
+		<dict>
+			<key>pressure</key>
+			<integer>888</integer>
+			<key>needTobePumped</key>
+			<false/>
+		</dict>
+	</dict>
+</dict>
+</plist>
