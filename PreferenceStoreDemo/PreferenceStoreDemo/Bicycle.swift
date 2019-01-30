@@ -51,15 +51,6 @@ class Bicycle: NSObject, MSTRDevicePreferenceStoreProtocol {
         return defaultSelf
     }
 
-    func copy(with zone: NSZone? = nil) -> Any {
-        let copy = Bicycle()
-        copy.isLock = self.isLock
-        copy.fontWheel = self.fontWheel.copy() as! Wheel
-        copy.backWheel = self.backWheel.copy() as! Wheel
-
-        return copy
-    }
-
     static func useDefaultValue() -> Bool {
 
         return false
